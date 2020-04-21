@@ -1,0 +1,156 @@
+{
+  "Thing": {
+    "extends": [],
+    "fields": {
+      "image": {
+        "isArray": false,
+        "type": "tt:Entity"
+      },
+      "description": {
+        "isArray": false,
+        "type": "tt:String"
+      }
+    }
+  },
+  "CreativeWork": {
+    "extends": [
+      "Thing"
+    ],
+    "fields": {
+      "aggregateRating": {
+        "isArray": false,
+        "type": {
+          "ratingCount": {
+            "isArray": false,
+            "type": "tt:Number"
+          },
+          "ratingValue": {
+            "isArray": false,
+            "type": "tt:Number"
+          }
+        }
+      },
+      "author": {
+        "isArray": false,
+        "type": "Person"
+      },
+      "review": {
+        "isArray": true,
+        "type": "Review"
+      },
+      "datePublished": {
+        "isArray": false,
+        "type": "tt:Date"
+      }
+    }
+  },
+  "HowTo": {
+    "extends": [
+      "CreativeWork"
+    ],
+    "fields": {
+      "prepTime": {
+        "isArray": false,
+        "type": "tt:Duration"
+      },
+      "totalTime": {
+        "isArray": false,
+        "type": "tt:Duration"
+      }
+    }
+  },
+  "Recipe": {
+    "extends": [
+      "HowTo"
+    ],
+    "fields": {
+      "recipeYield": {
+        "isArray": false,
+        "type": "tt:String"
+      },
+      "recipeCategory": {
+        "isArray": true,
+        "type": "tt:String"
+      },
+      "recipeIngredient": {
+        "isArray": true,
+        "type": "tt:String"
+      },
+      "recipeInstructions": {
+        "isArray": true,
+        "type": "tt:String"
+      },
+      "nutrition": {
+        "isArray": false,
+        "type": {
+          "saturatedFatContent": {
+            "isArray": false,
+            "type": "tt:Measure"
+          },
+          "fatContent": {
+            "isArray": false,
+            "type": "tt:Measure"
+          },
+          "sugarContent": {
+            "isArray": false,
+            "type": "tt:Measure"
+          },
+          "cholesterolContent": {
+            "isArray": false,
+            "type": "tt:Measure"
+          },
+          "carbohydrateContent": {
+            "isArray": false,
+            "type": "tt:Measure"
+          },
+          "proteinContent": {
+            "isArray": false,
+            "type": "tt:Measure"
+          },
+          "sodiumContent": {
+            "isArray": false,
+            "type": "tt:Measure"
+          },
+          "fiberContent": {
+            "isArray": false,
+            "type": "tt:Measure"
+          },
+          "calories": {
+            "isArray": false,
+            "type": "tt:Measure"
+          }
+        }
+      },
+      "recipeCuisine": {
+        "isArray": true,
+        "type": "tt:String"
+      },
+      "cookTime": {
+        "isArray": false,
+        "type": "tt:Duration"
+      }
+    }
+  },
+  "Person": {
+    "extends": [
+      "Thing"
+    ],
+    "fields": {}
+  },
+  "Review": {
+    "extends": [
+      "CreativeWork"
+    ],
+    "fields": {
+      "reviewRating": {
+        "isArray": false,
+        "type": {
+          "ratingValue": {
+            "isArray": false,
+            "type": "tt:Number"
+          }
+        }
+      }
+    }
+  }
+}

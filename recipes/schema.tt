@@ -1,0 +1,85 @@
+class @edu.stanford.cs294s.riyav
+#_[name="riyav in Schema.org"]
+#_[description="Scraped data from websites that support schema.org"]
+#[whitelist=["Recipe", "Review"]] {
+  import loader from @org.thingpedia.v2();
+  import config from @org.thingpedia.config.none();
+
+  list query Thing(out id: Entity(edu.stanford.cs294s.riyav:Thing) #[unique=true] #[filterable=false] #[org_schema_has_data=true],
+                   out image: Entity(tt:picture) #_[canonical={base=["image"]}] #[org_schema_type="URL"] #[org_schema_has_data=true],
+                   out description: String #_[canonical={base=["description", "summary"]}] #[org_schema_type="Text"] #[string_values="edu.stanford.cs294s.riyav:Thing_description"] #[org_schema_has_data=true])
+  #_[canonical="thing"]
+  #_[confirmation="thing"]
+  #[confirm=false]
+  #[minimal_projection=["id"]]
+  #[org_schema_has_data=true]
+  #[org_schema_has_name=true];
+
+  list query CreativeWork extends Thing(out id: Entity(edu.stanford.cs294s.riyav:CreativeWork) #[unique=true] #[filterable=false] #[org_schema_has_data=true],
+                                        out aggregateRating: {
+                                          ratingCount: Number #_[canonical={base=["rating count"], property = ["# number of ratings", "# ratings"], verb = ["was rated # times"]}] #[org_schema_type="Integer"] #[org_schema_has_data=true],
+                                          ratingValue: Number #_[canonical={base=["rating"], property =["# star rating"], verb = ["was rated # stars"]}] #[org_schema_type="Number"] #[org_schema_has_data=true]
+                                        } #_[canonical={base=["aggregate rating"], property = ["# star rating"], verb = ["was rated # stars"]}] #[org_schema_type="AggregateRating"] #[org_schema_has_data=true],
+                                        out author: Entity(edu.stanford.cs294s.riyav:Person) #_[canonical={base=["author"], verb = ["written by #", "authored by #", "by #"]}] #[org_schema_type="Person"] #[org_schema_has_data=true],
+                                        out review: Array(Entity(edu.stanford.cs294s.riyav:Review)) #_[canonical={base=["reviews"]}] #[org_schema_type="Review"] #[org_schemas_has_data=true],
+                                        out datePublished: Date #_[canonical={base=["date published"], property = ["from"]}] #[org_schema_type="Date"] #[org_schema_has_data=true])
+  #_[canonical="creative work"]
+  #_[confirmation="creative work"]
+  #[confirm=false]
+  #[minimal_projection=["id"]]
+  #[org_schema_has_data=true]
+  #[org_schema_has_name=true];
+
+  list query HowTo extends CreativeWork(out id: Entity(edu.stanford.cs294s.riyav:HowTo) #[unique=true] #[filterable=false] #[org_schema_has_data=true],
+                                        out prepTime: Measure(ms) #_[canonical={base=["prep time"], verb = ["takes # minutes to prep", "prepped in # minutes"]}] #[org_schema_type="Duration"] #[org_schema_has_data=true],
+                                        out totalTime: Measure(ms) #_[canonical={base=["total time"], verb = ["takes # minutes total", "cooked in # minutes", "made in # minutes"]}] #[org_schema_type="Duration"] #[org_schema_has_data=true])
+  #_[canonical="how to"]
+  #_[confirmation="how to"]
+  #[confirm=false]
+  #[minimal_projection=["id"]]
+  #[org_schema_has_data=true]
+  #[org_schema_has_name=true];
+
+  list query Recipe extends HowTo(out id: Entity(edu.stanford.cs294s.riyav:Recipe) #[unique=true] #[filterable=false] #[org_schema_has_data=true],
+                                  out recipeYield: String #_[canonical={base=["recipe yield"], property = ["servings"], verb = ["serves #", "makes # servings"]}] #[org_schema_type="QuantitativeValue"] #[string_values="edu.stanford.cs294s.riyav:Recipe_recipeYield"] #[org_schema_has_data=true],
+                                  out recipeCategory: Array(String) #_[canonical={base=["recipe categories"]}] #[org_schema_type="Text"] #[string_values="edu.stanford.cs294s.riyav:Recipe_recipeCategory"] #[org_schema_has_data=true],
+                                  out recipeIngredient: Array(String) #_[canonical={base=["recipe ingredients"], verb = ["uses #", "contains #", "has # in it"]}] #[org_schema_type="Text"] #[string_values="edu.stanford.cs294s.riyav:Recipe_recipeIngredient"] #[org_schema_has_data=true],
+                                  out recipeInstructions: Array(String) #_[canonical={base=["recipe instructions"]}] #[org_schema_type="Text"] #[string_values="edu.stanford.cs294s.riyav:Recipe_recipeInstructions"] #[org_schema_has_data=true],
+                                  out nutrition: {
+                                    saturatedFatContent: Measure(kg) #_[canonical={verb=["contains #saturated_fat"],base=["saturated fat content", "saturated fat", "saturated fat amount"]}] #[org_schema_type="Mass"] #[org_schema_has_data=true],
+                                    fatContent: Measure(kg) #_[canonical={verb=["contains #fat"],base=["fat content", "fat", "fat amount"]}] #[org_schema_type="Mass"] #[org_schema_has_data=true],
+                                    sugarContent: Measure(kg) #_[canonical={verb=["contains #sugar"],base=["sugar content", "sugar", "sugar amount"]}] #[org_schema_type="Mass"] #[org_schema_has_data=true],
+                                    cholesterolContent: Measure(kg) #_[canonical={verb=["contains #cholesterol"],base=["cholesterol content", "cholesterol", "cholesterol amount"]}] #[org_schema_type="Mass"] #[org_schema_has_data=true],
+                                    carbohydrateContent: Measure(kg) #_[canonical={verb=["contains #carbohydrate"],base=["carbohydrate content", "carbohydrate", "carbohydrate amount"]}] #[org_schema_type="Mass"] #[org_schema_has_data=true],
+                                    proteinContent: Measure(kg) #_[canonical={verb=["contains #protein"],base=["protein content", "protein", "protein amount"]}] #[org_schema_type="Mass"] #[org_schema_has_data=true],
+                                    sodiumContent: Measure(kg) #_[canonical={verb=["contains #sodium"],base=["sodium content", "sodium", "sodium amount"]}] #[org_schema_type="Mass"] #[org_schema_has_data=true],
+                                    fiberContent: Measure(kg) #_[canonical={verb=["contains #fiber"],base=["fiber content", "fiber", "fiber amount"]}] #[org_schema_type="Mass"] #[org_schema_has_data=true],
+                                    calories: Measure(kcal) #_[canonical={base=["calories"], verb = ["contains # calories", "has # calories"]}] #[org_schema_type="Energy"] #[org_schema_has_data=true]
+                                  } #_[canonical={base=["nutrition"]}] #[org_schema_type="NutritionInformation"] #[org_schema_has_data=true],
+                                  out recipeCuisine: Array(String) #_[canonical={base=["recipe cuisines"], property = ["# style recipe", "# cuisine recipe", "# inspired recipe"]}] #[org_schema_type="Text"] #[string_values="edu.stanford.cs294s.riyav:Recipe_recipeCuisine"] #[org_schema_has_data=true],
+                                  out cookTime: Measure(ms) #_[canonical={base=["cook time"], property = ["# minute long", "cooks in # minutes"],verb = ["takes # minutes to cook"]}] #[org_schema_type="Duration"] #[org_schema_has_data=true])
+  #_[canonical="recipe"]
+  #_[confirmation="recipe"]
+  #[confirm=false]
+  #[minimal_projection=["id"]]
+  #[org_schema_has_data=true]
+  #[org_schema_has_name=true];
+
+  list query Person extends Thing(out id: Entity(edu.stanford.cs294s.riyav:Person) #[unique=true] #[filterable=false] #[org_schema_has_data=true])
+  #_[canonical="person"]
+  #_[confirmation="person"]
+  #[confirm=false]
+  #[minimal_projection=["id"]]
+  #[org_schema_has_data=true]
+  #[org_schema_has_name=true];
+
+  list query Review extends CreativeWork(out id: Entity(edu.stanford.cs294s.riyav:Review) #[unique=true] #[filterable=false] #[org_schema_has_data=true],
+                                         out reviewRating: {
+                                           ratingValue: Number #_[canonical={base=["rating"]}] #[org_schema_type="Number"] #[org_schema_has_data=true]
+                                         } #_[canonical={base=["review rating"]}] #[org_schema_type="Rating"] #[org_schema_has_data=true])
+  #_[canonical="review"]
+  #_[confirmation="review"]
+  #[confirm=false]
+  #[minimal_projection=["id"]]
+  #[org_schema_has_data=true];
+}
